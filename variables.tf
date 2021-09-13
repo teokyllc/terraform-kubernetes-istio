@@ -1,4 +1,3 @@
-  
 variable "aks_kubeconfig" {
     type = string
     description = "The kubeconfig file from the AKS cluster."
