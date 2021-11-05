@@ -1,0 +1,15 @@
+global:
+  imagePullSecrets: []
+  istioNamespace: istio-system
+
+  istiod:
+    enableAnalysis: false
+
+  configValidation: true
+  externalIstiod: false
+  remotePilotAddress: ""
+
+base:
+  validationURL: ""
+  enableIstioConfigCRDs: true
+defaultRevision: "default"
