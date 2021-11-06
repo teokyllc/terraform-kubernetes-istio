@@ -15,6 +15,11 @@ resource "null_resource" "deploy_istio" {
       curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${var.istio_version} TARGET_ARCH=x86_64 sh 
       cd istio-${var.istio_version}
       
+      # Install the Istio operator chart
+      helm install istio-operator manifests/charts/istio-operator \
+        --values ../terraform-kubernetes-istio/chart-values/operator-values.yaml \
+        --namespace istio-operator
+      
       # Install the Istio base chart
       helm install istio-base manifests/charts/base \
         --values ../terraform-kubernetes-istio/chart-values/base-values.yaml \
