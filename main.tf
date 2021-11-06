@@ -3,6 +3,7 @@ resource "null_resource" "setup_env" {
     command = <<-EOT
       mkdir ~/.kube || echo "~/.kube already exists"
       echo "${var.aks_kubeconfig}" > ~/.kube/config
+      chmod 600 ~/.kube/config
     EOT
   }
 }
@@ -33,17 +34,22 @@ resource "null_resource" "deploy_istio" {
       helm install istio-egress manifests/charts/gateways/istio-egress \
         --values ../terraform-kubernetes-istio/chart-values/egress-gw-values.yaml \
         --namespace istio-system
+
+      kubectl -n istio-system patch service istio-egressgateway -p '{"spec": {"type": "LoadBalancer"}}'
+      sleep 30
     EOT
   }
 }
 
 resource "null_resource" "deploy_bookinfo" {
-  count = var.bookinfo_sample_app ? enabled : 0
-  depends_on = [null_resource.setup_env]
+  count = var.bookinfo_sample_app ? 1 : 0
+  depends_on = [null_resource.deploy_istio]
   provisioner "local-exec" {
     command = <<-EOT
       cd istio-${var.istio_version}
       kubectl -n bookinfo apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+      kubectl -n bookinfo apply -f ../terraform-kubernetes-istio/istio-manifests/bookinfo.yaml
+      kubectl -n bookinfo apply -f ../terraform-kubernetes-istio/istio-manifests/bookinfo-dr.yaml
     EOT
   }
 }
