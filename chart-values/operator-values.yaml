@@ -1,0 +1,16 @@
+hub: docker.io/istio
+tag: 1.11.4
+imagePullSecrets: []
+operatorNamespace: istio-operator
+watchedNamespaces: istio-system
+waitForResourcesTimeout: 300s
+enableCRDTemplates: false
+revision: ""
+operator:
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
