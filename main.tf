@@ -41,6 +41,17 @@ resource "null_resource" "deploy_istio" {
   }
 }
 
+resource "null_resource" "deploy_kiali_mgmt_console" {
+  count = var.kiali_mgmt_console ? 1 : 0
+  depends_on = [null_resource.deploy_istio]
+  provisioner "local-exec" {
+    command = <<-EOT
+      cd istio-${var.istio_version}
+      kubectl apply -f samples/addons/kiali.yaml
+    EOT
+  }
+}
+
 resource "null_resource" "deploy_bookinfo" {
   count = var.bookinfo_sample_app ? 1 : 0
   depends_on = [null_resource.deploy_istio]
