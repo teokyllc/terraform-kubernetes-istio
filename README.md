@@ -10,7 +10,7 @@ You can use versioned release tags to ensure that your project using this module
 <b>Repo latest commit</b><br>
 ```
 module "istio" {
-  source = "github.com/Medality-Health/terraform-kubernetes-istio"
+  source = "github.com/teokyllc/terraform-kubernetes-istio"
   ...
 ```
 <br>
@@ -19,7 +19,7 @@ module "istio" {
 
 ```
 module "istio" {
-  source = "github.com/Medality-Health/terraform-kubernetes-istio?ref=1.0"
+  source = "github.com/teokyllc/terraform-kubernetes-istio?ref=1.0"
   ...
 ```
 <br>
@@ -29,7 +29,7 @@ This is an example of using this module to deploy the Istio service mesh.<br>
 
 ```
 module "istio" {
-  source = "github.com/Medality-Health/terraform-kubernetes-istio?ref=1.0"
+  source = "github.com/teokyllc/terraform-kubernetes-istio?ref=1.0"
   istio_namespace = "istio-system"
   istio_version   = "1.16.2"
 }
@@ -38,7 +38,7 @@ module "istio" {
 <br><br>
 Module can be tested locally:<br>
 ```
-git clone https://github.com/Medality-Health/terraform-kubernetes-istio.git
+git clone https://github.com/teokyllc/terraform-kubernetes-istio.git
 cd terraform-kubernetes-istio
 
 cat <<EOF > istio.auto.tfvars
