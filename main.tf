@@ -1,3 +1,16 @@
+resource "helm_release" "istio_base" {
+  name       = "base"
+  repository = "https://istio-release.storage.googleapis.com/charts"
+  chart      = "base"
+  version    = var.istio_version
+  namespace  = var.istio_namespace
+
+  set {
+    name  = "global.istioNamespace"
+    value = var.istio_namespace
+  }
+}
+
 resource "helm_release" "istiod" {
   name       = "istiod"
   repository = "https://istio-release.storage.googleapis.com/charts"
@@ -7,17 +20,27 @@ resource "helm_release" "istiod" {
 
   set {
     name  = "pilot.replicaCount"
-    value = "2"
+    value = var.istiod_replica_count
   }
 
   set {
     name  = "pilot.autoscaleMin"
-    value = "2"
+    value = var.istiod_replica_count
   }
 
   set {
     name  = "pilot.rollingMaxUnavailable"
     value = "50%"
+  }
+
+  set {
+    name  = "telemetry.v2.accessLogPolicy.enabled"
+    value = var.istiod_access_logs_enabled
+  }
+
+  set {
+    name  = "telemetry.v2.accessLogPolicy.logWindowDuration"
+    value = var.istiod_access_logs_enabled_retention
   }
 }
 
@@ -31,6 +54,6 @@ resource "helm_release" "ingress_gateway" {
 
   set {
     name  = "replicaCount"
-    value = "2"
+    value = var.ingress_gateway_replica_count
   }
 }
