@@ -1,9 +1,10 @@
 resource "helm_release" "istio_base" {
-  name       = "base"
-  repository = "https://istio-release.storage.googleapis.com/charts"
-  chart      = "base"
-  version    = var.istio_version
-  namespace  = var.istio_namespace
+  name             = "base"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  chart            = "base"
+  version          = var.istio_version
+  namespace        = var.istio_namespace
+  create_namespace = true
 
   set {
     name  = "global.istioNamespace"
@@ -12,6 +13,7 @@ resource "helm_release" "istio_base" {
 }
 
 resource "helm_release" "istiod" {
+  depends_on = [helm_release.istio_base]
   name       = "istiod"
   repository = "https://istio-release.storage.googleapis.com/charts"
   chart      = "istiod"
