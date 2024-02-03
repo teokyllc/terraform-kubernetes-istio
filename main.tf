@@ -34,16 +34,6 @@ resource "helm_release" "istiod" {
     name  = "pilot.rollingMaxUnavailable"
     value = "50%"
   }
-
-  set {
-    name  = "telemetry.v2.accessLogPolicy.enabled"
-    value = var.istiod_access_logs_enabled
-  }
-
-  set {
-    name  = "telemetry.v2.accessLogPolicy.logWindowDuration"
-    value = var.istiod_access_logs_enabled_retention
-  }
 }
 
 resource "helm_release" "ingress_gateway" {
@@ -56,6 +46,11 @@ resource "helm_release" "ingress_gateway" {
 
   set {
     name  = "replicaCount"
+    value = var.ingress_gateway_replica_count
+  }
+
+  set {
+    name  = "autoscaling.minReplicas"
     value = var.ingress_gateway_replica_count
   }
 }
