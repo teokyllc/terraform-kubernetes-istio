@@ -15,7 +15,7 @@ output "ingress_gateway_release_revision" {
 }
 
 output "ingress_gateway_hostname" {
-  value = data.kubernetes_service.example.status.0.load_balancer.0.ingress.0.hostname
+  value = data.kubernetes_service.istio_ingress_gateway.status.0.load_balancer.0.ingress.0.hostname
 }
 
 output "ingress_gateway_istio_label" {
